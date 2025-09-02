@@ -1,0 +1,217 @@
+[
+  {
+    "type": "Requerimento",
+    "text": "Requeiro a convocação do Secretário Municipal de Saúde para prestar esclarecimentos sobre a campanha de vacinação em curso.",
+    "embedding": []
+  },
+  {
+    "type": "Indicação",
+    "text": "Indico ao Executivo que sejam implantadas lombadas na Estrada da Coloninha, visando maior segurança dos pedestres.",
+    "embedding": []
+  },
+  {
+    "type": "Ofício",
+    "text": "Encaminhamos o presente ofício para informar a suspensão da Sessão Ordinária do dia 12 de junho por motivo de força maior.",
+    "embedding": []
+  },
+  {
+    "type": "Lei",
+    "text": "LEI Nº 1455/2005 – Dispõe sobre a criação do Conselho Municipal de Meio Ambiente no Município de Paraty. Art. 1º - Fica instituído o Conselho Municipal de Meio Ambiente, com caráter consultivo e deliberativo.",
+    "embedding": []
+  },
+  {
+    "type": "Lei Complementar",
+    "text": "LEI COMPLEMENTAR Nº 51/2021 – Altera o Código Tributário do Município de Paraty e dá outras providências. Art. 1º - O artigo 23 do Código Tributário passa a vigorar com a seguinte redação...",
+    "embedding": []
+  },
+  {
+    "type": "Ato",
+    "text": "ATO DA PRESIDÊNCIA Nº 05/2022 – Designa o servidor Carlos Souza como fiscal responsável pelas obras no novo anexo da Câmara Municipal de Paraty.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto",
+    "text": "DECRETO Nº 2356/2023 – Declara ponto facultativo no dia 8 de setembro de 2023 nas repartições públicas do Município de Paraty.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto",
+    "text": "DECRETO Nº 2401/2024 – Regulamenta a Lei nº 1455/2005, que cria o Conselho Municipal de Meio Ambiente, estabelecendo suas competências e composição.",
+    "embedding": []
+  },
+  {
+    "type": "Lei",
+    "text": "LEI Nº 1500/2007 – Institui o Programa Municipal de Educação Ambiental nas Escolas Públicas de Paraty e dá outras providências.",
+    "embedding": []
+  },
+  {
+    "type": "Lei Complementar",
+    "text": "LEI COMPLEMENTAR Nº 60/2023 – Dispõe sobre a estrutura administrativa da Câmara Municipal de Paraty, extingue cargos e cria novos postos de trabalho.",
+    "embedding": []
+  },
+  {
+    "type": "Ato",
+    "text": "ATO Nº 03/2024 – Nomeia os membros da Comissão Permanente de Licitação da Câmara Municipal de Paraty para o exercício de 2024.",
+    "embedding": []
+  },
+  {
+    "type": "Requerimento",
+    "text": "Requeiro a realização de uma audiência pública para discutir o impacto da construção do novo terminal rodoviário em Paraty.",
+    "embedding": []
+  },
+  {
+    "type": "Indicação",
+    "text": "Indico a necessidade de pintura das faixas de pedestres no bairro Mangueira, visando garantir a segurança dos alunos da escola municipal.",
+    "embedding": []
+  },
+  {
+    "type": "Ofício",
+    "text": "Ofício nº 114/2023 – Comunicamos que a Sessão Solene em homenagem ao Dia do Turismo será realizada no dia 27 de setembro.",
+    "embedding": []
+  }, 
+  {
+    "type": "Requerimento",
+    "text": "Requeiro a convocação do Secretário Municipal de Saúde para prestar esclarecimentos sobre a campanha de vacinação em curso.",
+    "embedding": []
+  },
+  {
+    "type": "Indicação",
+    "text": "Indico ao Executivo que sejam implantadas lombadas na Estrada da Coloninha, visando maior segurança dos pedestres.",
+    "embedding": []
+  },
+  {
+    "type": "Ofício",
+    "text": "Encaminhamos o presente ofício para informar a suspensão da Sessão Ordinária do dia 12 de junho por motivo de força maior.",
+    "embedding": []
+  },
+  {
+    "type": "Moção de Congratulação",
+    "text": "MOÇÃO Nº 22/2024 – Congratula-se com a equipe do SAMU pelo atendimento exemplar durante o acidente na BR-101.",
+    "embedding": []
+  },
+  {
+    "type": "Moção de Repúdio",
+    "text": "MOÇÃO Nº 15/2023 – Repudia o aumento indiscriminado das tarifas de transporte coletivo intermunicipal.",
+    "embedding": []
+  },
+  {
+    "type": "Projeto de Resolução",
+    "text": "PRJ 05/2024 – Altera o art. 10 do Regimento Interno da Câmara para incluir sessões remotas.",
+    "embedding": []
+  },
+  {
+    "type": "Parecer Técnico",
+    "text": "PARECER Nº 33/2024 – Área técnica manifesta-se contrariamente à alteração do zoneamento industrial no bairro Jardim Carvalho.",
+    "embedding": []
+  },
+  {
+    "type": "Nota de Pesar",
+    "text": "NOTA DE PESAR – Lamenta o falecimento do ex-vereador João da Silva, servidor público por 30 anos.",
+    "embedding": []
+  },
+  {
+    "type": "Projeto de Decreto Legislativo",
+    "text": "PDL 07/2024 – Autoriza a abertura de crédito suplementar no valor de R$ 450.000,00 para reforma do teatro municipal.",
+    "embedding": []
+  },
+  {
+    "type": "Relatório de Fiscalização",
+    "text": "RELATÓRIO 01/2024 – Constata irregularidades na execução das obras do novo centro de saúde no bairro Caboré.",
+    "embedding": []
+  },
+  {
+    "type": "Comunicação Interna",
+    "text": "CI Nº 142/2024 – Comunica a transferência do servidor Luiz Mendes para o setor de Protocolo Geral.",
+    "embedding": []
+  },
+  {
+    "type": "Edital de Licitação",
+    "text": "EDITAL 12/2024 – Convoca interessados para processo licitatório na modalidade Pregão Eletrônico nº 045/2024.",
+    "embedding": []
+  },
+  {
+    "type": "Portaria",
+    "text": "PORTARIA Nº 89/2024 – Designa comissão para apurar denúncias de superfaturamento na compra de merenda escolar.",
+    "embedding": []
+  },
+  {
+    "type": "Proposta de Emenda à Lei Orgânica",
+    "text": "PELO 03/2024 – Propõe emenda para incluir o direito à moradia digna como princípio fundamental do município.",
+    "embedding": []
+  },
+  {
+    "type": "Termo de Cooperação",
+    "text": "TERMO 05/2024 – Estabelece parceria entre a Câmara Municipal e a UNESP para capacitação de servidores.",
+    "embedding": []
+  },
+  {
+    "type": "Voto de Louvor",
+    "text": "VOTO Nº 08/2024 – Enaltece o trabalho voluntário do Instituto Reciclar Paraty na educação ambiental.",
+    "embedding": []
+  },
+  {
+    "type": "Memorando",
+    "text": "MEMORANDO 144/2024 – Solicita ao Departamento de Engenharia avaliação estrutural do prédio anexo.",
+    "embedding": []
+  },
+  {
+    "type": "Ata de Sessão",
+    "text": "ATA DA 25ª SESSÃO ORDINÁRIA – Registra a aprovação do PL 12/2024 e a indicação nº 33/2024 para o Executivo.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto Municipal",
+    "text": "DECRETO MUNICIPAL Nº 1.702/2024 – Dispõe sobre o horário de funcionamento do comércio durante o Carnaval 2024 no município de Paraty.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto Municipal",
+    "text": "DECRETO MUNICIPAL Nº 1.599/2023 – Declara situação de emergência por 90 dias devido às enchentes no distrito de Tarituba.",
+    "embedding": []
+  },
+
+  {
+    "type": "Decreto Legislativo",
+    "text": "DECRETO LEGISLATIVO Nº 45/2024 – Concede título de Cidadão Honorário ao médico Dr. Carlos Albuquerque pelos relevantes serviços à saúde pública.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto Legislativo",
+    "text": "DECRETO LEGISLATIVO Nº 12/2023 – Autoriza a abertura de crédito suplementar no valor de R$ 800.000,00 para modernização do plenário.",
+    "embedding": []
+  },
+
+  {
+    "type": "Resolução Municipal",
+    "text": "RESOLUÇÃO Nº 88/2024 – Estabelece novas regras para distribuição do tempo de palavra nas sessões ordinárias, limitando a 10 minutos por vereador.",
+    "embedding": []
+  },
+  {
+    "type": "Resolução Municipal",
+    "text": "RESOLUÇÃO Nº 33/2023 – Aprova o calendário de sessões para o segundo semestre de 2023, incluindo 12 sessões ordinárias e 3 extraordinárias.",
+    "embedding": []
+  },
+
+  {
+    "type": "Lei Ordinária",
+    "text": "LEI ORDINÁRIA Nº 2.100/2024 – Institui o Programa de Incentivo Fiscal para Empresas que Adotem Práticas Sustentáveis, com desconto de até 20% no IPTU.",
+    "embedding": []
+  },
+  {
+    "type": "Lei Ordinária",
+    "text": "LEI ORDINÁRIA Nº 1.987/2023 – Obriga a instalação de bicicletários em estabelecimentos comerciais com área superior a 500m².",
+    "embedding": []
+  },
+
+  {
+    "type": "Decreto Municipal",
+    "text": "DECRETO MUNICIPAL Nº 1.555/2024 – Regulamenta a Lei 1.987/2023, especificando padrões técnicos para os bicicletários.",
+    "embedding": []
+  },
+  {
+    "type": "Decreto Legislativo",
+    "text": "DECRETO LEGISLATIVO Nº 30/2024 – Aprova a contratação de consultoria externa para auditoria das contas da gestão 2023.",
+    "embedding": []
+  }
+]
+
