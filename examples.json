@@ -85,6 +85,36 @@
     "embedding": []
   },
   {
+    "type": "Moção de Louvor",
+    "text": "MOÇÃO DE LOUVOR – Homenageia Lucas José em reconhecimento à sua trajetória artística e inspiradora, pelos relevantes serviços prestados à cultura local.",
+    "embedding": []
+  },
+  {
+    "type": "Moção de Louvor",
+    "text": "Apresento à Douta Mesa, obedecidas as formalidades regimentais, MOÇÃO DE LOUVOR em reconhecimento ao trabalho exemplar desenvolvido pela equipe da associação comunitária.",
+    "embedding": []
+  },
+  {
+    "type": "Mensagem",
+    "text": "MENSAGEM Nº 18/2024 – Encaminha à apreciação desta Casa o Projeto de Lei que dispõe sobre a reestruturação administrativa do Poder Executivo Municipal.",
+    "embedding": []
+  },
+  {
+    "type": "Mensagem",
+    "text": "Mensagem ao Legislativo: submeto à elevada consideração dos nobres vereadores o incluso projeto de lei para abertura de crédito adicional especial.",
+    "embedding": []
+  },
+  {
+    "type": "Súmula",
+    "text": "SÚMULA Nº 12/2024 – Dispõe sobre o entendimento consolidado da comissão quanto à tramitação de proposições em regime de urgência.",
+    "embedding": []
+  },
+  {
+    "type": "Súmula",
+    "text": "Súmula: consolida o entendimento administrativo acerca da concessão de diárias e do ressarcimento de despesas em viagens oficiais.",
+    "embedding": []
+  },
+  {
     "type": "Moção de Congratulação",
     "text": "MOÇÃO Nº 22/2024 – Congratula-se com a equipe do SAMU pelo atendimento exemplar durante o acidente na BR-101.",
     "embedding": []
@@ -214,4 +244,3 @@
     "embedding": []
   }
 ]
-

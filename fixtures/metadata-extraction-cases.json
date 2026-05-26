@@ -1,0 +1,74 @@
+[
+  {
+    "name": "lei com titulo na mesma linha",
+    "text": "LEI ORDINÁRIA Nº 2.100/2024 – Institui o Programa de Incentivo Fiscal para Empresas que Adotem Práticas Sustentáveis.\nArt. 1º Fica instituído o programa.",
+    "expected": {
+      "title": "Institui o Programa de Incentivo Fiscal para Empresas que Adotem Práticas Sustentáveis",
+      "year": 2024
+    }
+  },
+  {
+    "name": "decreto com data extensa",
+    "text": "DECRETO MUNICIPAL Nº 1.599 de 15 de março de 2023\nDeclara situação de emergência por 90 dias devido às enchentes no distrito de Tarituba.\nArt. 1º Fica declarada situação de emergência.",
+    "expected": {
+      "title": "Declara situação de emergência por 90 dias devido às enchentes no distrito de Tarituba",
+      "year": 2023
+    }
+  },
+  {
+    "name": "portaria com assunto",
+    "text": "PORTARIA Nº 89/2024\nAssunto: Designa comissão para apurar denúncias de superfaturamento na compra de merenda escolar.\nO Presidente da Câmara resolve:",
+    "expected": {
+      "title": "Designa comissão para apurar denúncias de superfaturamento na compra de merenda escolar",
+      "year": 2024
+    }
+  },
+  {
+    "name": "oficio com dois pontos",
+    "text": "OFÍCIO Nº 114/2023: Comunicamos que a Sessão Solene em homenagem ao Dia do Turismo será realizada no dia 27 de setembro.\nAtenciosamente,",
+    "expected": {
+      "title": "Comunicamos que a Sessão Solene em homenagem ao Dia do Turismo será realizada no dia 27 de setembro",
+      "year": 2023
+    }
+  },
+  {
+    "name": "resolucao com ementa",
+    "text": "RESOLUÇÃO Nº 88/2024\nEMENTA: Estabelece novas regras para distribuição do tempo de palavra nas sessões ordinárias.\nArt. 1º O tempo de palavra passa a ser de 10 minutos.",
+    "expected": {
+      "title": "Estabelece novas regras para distribuição do tempo de palavra nas sessões ordinárias",
+      "year": 2024
+    }
+  },
+  {
+    "name": "lei complementar com titulo apos travessao",
+    "text": "LEI COMPLEMENTAR Nº 51/2021 – Altera o Código Tributário do Município de Paraty e dá outras providências.\nArt. 1º O artigo 23 passa a vigorar com a seguinte redação.",
+    "expected": {
+      "title": "Altera o Código Tributário do Município de Paraty e dá outras providências",
+      "year": 2021
+    }
+  },
+  {
+    "name": "projeto sem numero mas com ano no topo",
+    "text": "PROJETO DE RESOLUÇÃO\n2024\nInclui sessões remotas no Regimento Interno da Câmara.\nArt. 1º Ficam permitidas sessões remotas.",
+    "expected": {
+      "title": "Inclui sessões remotas no Regimento Interno da Câmara",
+      "year": 2024
+    }
+  },
+  {
+    "name": "titulo inline com hifen simples",
+    "text": "MEMORANDO 144/2024 - Solicita ao Departamento de Engenharia avaliação estrutural do prédio anexo.\nEncaminhar com urgência.",
+    "expected": {
+      "title": "Solicita ao Departamento de Engenharia avaliação estrutural do prédio anexo",
+      "year": 2024
+    }
+  },
+  {
+    "name": "titulo na primeira linha e identificacao abaixo",
+    "text": "RELATÓRIO FINAL DA COMISSÃO 1 / 2024\n\nINDICAÇÃO 328 / 2024\n\nEncaminha providências sobre o tema.",
+    "expected": {
+      "title": "RELATÓRIO FINAL DA COMISSÃO 1 / 2024",
+      "year": 2024
+    }
+  }
+]
