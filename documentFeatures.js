@@ -1,27 +1,59 @@
+import { stripBoilerplate } from "./boilerplate.js";
+
 const HEADER_WINDOW_LINES = 12;
 const MAX_EMBEDDING_INPUT_CHARS = 2000;
 
+/**
+ * `decisive`: casou, encerra a decisão — usado no despacho, que cita o número da
+ * propositura que despacha e por isso era rotulado como se fosse ela.
+ * `suppresses`: tipo mais específico derruba o genérico que também casaria.
+ */
 const TYPE_PATTERNS = [
-  { type: "Projeto de Decreto Legislativo", patterns: [/projeto\s+de\s+decreto\s+legislativo/i, /\bpdl\b/i] },
-  { type: "Projeto de Resolução", patterns: [/projeto\s+de\s+resolu[cç][aã]o/i, /\bprj\b/i] },
-  { type: "Proposta de Emenda à Lei Orgânica", patterns: [/proposta\s+de\s+emenda\s+[àa]\s+lei\s+org[aâ]nica/i, /\bpelo\b/i] },
+  {
+    type: "Despacho",
+    decisive: true,
+    patterns: [/^\s*despacho\s*:/im, /\bdespacho\s+d[aeo]\s+/i, /^\s*despacho\b/im],
+  },
+  {
+    type: "Projeto de Lei Complementar",
+    suppresses: ["Projeto de Lei", "Lei Complementar", "Lei"],
+    patterns: [/projeto\s+de\s+lei\s+complementar/i, /\bplc\b/i],
+  },
+  {
+    type: "Projeto de Lei",
+    suppresses: ["Lei", "Lei Ordinária"],
+    patterns: [
+      /projeto\s+de\s+lei/i,
+      /faz\s+saber\s+que\s+o\s+solene\s+plen[aá]rio\s+aprovou/i,
+      /\bpl\s*n?[º°o.]?\s*\d+/i,
+    ],
+  },
+  { type: "Veto", patterns: [/\bveto\s+(total|parcial)\b/i, /^\s*veto\b/im] },
+  { type: "Autógrafo", patterns: [/^\s*aut[oó]grafo\b/im, /aut[oó]grafo\s+n?[º°o.]?\s*\d+/i] },
+  { type: "Projeto de Decreto Legislativo", suppresses: ["Decreto Legislativo", "Decreto"], patterns: [/projeto\s+de\s+decreto\s+legislativo/i, /\bpdl\b/i] },
+  { type: "Projeto de Resolução", suppresses: ["Resolução Municipal"], patterns: [/projeto\s+de\s+resolu[cç][aã]o/i] },
+  { type: "Proposta de Emenda à Lei Orgânica", patterns: [/proposta\s+de\s+emenda\s+[àa]\s+lei\s+org[aâ]nica/i, /\bpelo\s+n?[º°o.]?\s*\d+/i] },
   { type: "Lei Complementar", patterns: [/lei\s+complementar/i] },
   { type: "Lei Ordinária", patterns: [/lei\s+ordin[aá]ria/i] },
   { type: "Decreto Legislativo", patterns: [/decreto\s+legislativo/i] },
   { type: "Decreto Municipal", patterns: [/decreto\s+municipal/i] },
   { type: "Resolução Municipal", patterns: [/resolu[cç][aã]o\s+municipal/i] },
-  { type: "Moção de Louvor", patterns: [/mo[cç][aã]o\s+de\s+louvor/i, /em\s+reconhecimento\b/i] },
-  { type: "Moção de Congratulação", patterns: [/mo[cç][aã]o\s+de\s+congratula[cç][aã]o/i, /congratula[-\s]*se/i] },
-  { type: "Moção de Repúdio", patterns: [/mo[cç][aã]o\s+de\s+rep[uú]dio/i, /repudia\b/i] },
+  { type: "Moção de Louvor", suppresses: ["Moção"], patterns: [/mo[cç][aã]o\s+de\s+louvor/i, /em\s+reconhecimento\b/i] },
+  { type: "Moção de Congratulação", suppresses: ["Moção"], patterns: [/mo[cç][aã]o\s+de\s+congratula[cç][aã]o/i, /congratula[-\s]*se/i] },
+  { type: "Moção de Repúdio", suppresses: ["Moção"], patterns: [/mo[cç][aã]o\s+de\s+rep[uú]dio/i, /repudia\b/i] },
   { type: "Mensagem", patterns: [/^mensagem\b/im, /mensagem\s+n?[º°o.]?\s*\d+/i] },
   { type: "Súmula", patterns: [/^s[úu]mula\b/im, /s[úu]mula\s+n?[º°o.]?\s*\d+/i] },
-  { type: "Nota de Pesar", patterns: [/nota\s+de\s+pesar/i] },
+  { type: "Nota de Pesar", suppresses: ["Moção"], patterns: [/nota\s+de\s+pesar/i, /mo[cç][aã]o\s+de\s+pesar/i] },
+  // Moção sem qualificação: as variantes acima a suprimem quando presentes.
+  { type: "Moção", patterns: [/^\s*mo[cç][aã]o\b/im, /mo[cç][aã]o\s+n?[º°o.]?\s*\d+/i] },
   { type: "Voto de Louvor", patterns: [/voto\s+de\s+louvor/i] },
   { type: "Relatório de Fiscalização", patterns: [/relat[oó]rio\s+de\s+fiscaliza[cç][aã]o/i, /constata\s+irregularidades/i] },
   { type: "Comunicação Interna", patterns: [/\bcomunica[cç][aã]o\s+interna\b/i, /^\s*ci\s+n?[º°o.]?/im] },
-  { type: "Edital de Licitação", patterns: [/edital/i, /licita[cç][aã]o/i, /preg[aã]o/i] },
+  { type: "Edital de Licitação", patterns: [/edital\s+de\s+(licita[cç][aã]o|preg[aã]o|concorr[eê]ncia|tomada\s+de\s+pre[cç]os)/i, /^\s*edital\s+n?[º°o.]?\s*\d+/im] },
   { type: "Termo de Cooperação", patterns: [/termo\s+de\s+coopera[cç][aã]o/i, /estabelece\s+parceria/i] },
-  { type: "Ata de Sessão", patterns: [/ata\s+da\s+\d+/i, /sess[aã]o\s+ordin[aá]ria/i] },
+  // Exigir a palavra "ata": só "sessão ordinária" casava em despacho e em
+  // propositura lida em sessão, e foi o que produziu 683 atas inexistentes.
+  { type: "Ata de Sessão", patterns: [/\bata\s+d[ao]\s+/i, /\bata\s+da\s+\d+/i] },
   { type: "Parecer Técnico", patterns: [/parecer\s+t[eé]cnico/i, /^\s*parecer\s+n?[º°o.]?/im] },
   { type: "Requerimento", patterns: [/requerimento/i, /\brequeiro\b/i] },
   { type: "Indicação", patterns: [/indica[cç][aã]o/i, /\bindico\b/i] },
@@ -60,7 +92,10 @@ const STOPWORDS = new Set([
 ]);
 
 export function buildEmbeddingInput(text) {
-  const normalized = normalizeText(text);
+  // Sem esta limpeza o vetor sai praticamente igual para todo documento da Casa:
+  // as primeiras linhas são endereço, telefone e aviso de assinatura.
+  const { texto } = stripBoilerplate(text);
+  const normalized = normalizeText(texto);
   if (!normalized) return "";
 
   const lines = normalized.split("\n").slice(0, HEADER_WINDOW_LINES);
@@ -71,22 +106,36 @@ export function buildEmbeddingInput(text) {
 }
 
 export function detectDocumentType(text) {
-  const normalized = normalizeText(text);
+  const { texto } = stripBoilerplate(text);
+  const normalized = normalizeText(texto);
   const header = normalized.split("\n").slice(0, HEADER_WINDOW_LINES).join("\n");
 
   const matches = [];
 
   for (const entry of TYPE_PATTERNS) {
-    const hitCount = entry.patterns.filter((pattern) => pattern.test(header)).length;
+    // O corpo também vale: a espécie nem sempre está nas primeiras linhas.
+    const noCabecalho = entry.patterns.filter((pattern) => pattern.test(header)).length;
+    const noCorpo = entry.patterns.filter((pattern) => pattern.test(normalized)).length;
+    const hitCount = noCabecalho || noCorpo;
     if (!hitCount) continue;
 
+    // Casar no cabeçalho continua valendo mais do que casar perdido no corpo.
+    const base = noCabecalho ? 0.45 : 0.3;
     matches.push({
       type: entry.type,
-      strength: Math.min(1, 0.45 + (hitCount - 1) * 0.2),
+      strength: Math.min(1, base + (hitCount - 1) * 0.2),
+      decisive: Boolean(entry.decisive) && noCabecalho > 0,
+      suppresses: entry.suppresses || [],
     });
   }
 
-  return matches.sort((left, right) => right.strength - left.strength);
+  const decisivo = matches.find((match) => match.decisive);
+  if (decisivo) return [decisivo];
+
+  const suprimidos = new Set(matches.flatMap((match) => match.suppresses));
+  return matches
+    .filter((match) => !suprimidos.has(match.type))
+    .sort((left, right) => right.strength - left.strength);
 }
 
 export function calculateLexicalScore(leftText, rightText) {
