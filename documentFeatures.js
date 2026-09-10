@@ -28,7 +28,8 @@ const TYPE_PATTERNS = [
       /\bpl\s*n?[º°o.]?\s*\d+/i,
     ],
   },
-  { type: "Veto", patterns: [/\bveto\s+(total|parcial)\b/i, /^\s*veto\b/im] },
+  // O veto cita o autografo que ele veta; continua sendo veto.
+  { type: "Veto", suppresses: ["Autógrafo"], patterns: [/\bveto\s+(total|parcial)\b/i, /^\s*veto\b/im] },
   { type: "Autógrafo", patterns: [/^\s*aut[oó]grafo\b/im, /aut[oó]grafo\s+n?[º°o.]?\s*\d+/i] },
   { type: "Projeto de Decreto Legislativo", suppresses: ["Decreto Legislativo", "Decreto"], patterns: [/projeto\s+de\s+decreto\s+legislativo/i, /\bpdl\b/i] },
   { type: "Projeto de Resolução", suppresses: ["Resolução Municipal"], patterns: [/projeto\s+de\s+resolu[cç][aã]o/i] },
