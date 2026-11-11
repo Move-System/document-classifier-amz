@@ -1,0 +1,44 @@
+name: PR Merge Guard
+
+# Substituto de branch protection no plano Free (repo privado não tem rulesets):
+# quando a CI de um PR falha, o PR é convertido para RASCUNHO (o botão de merge
+# fica desabilitado). Quando a CI passa, volta para "ready".
+# O deploy Heroku já é bloqueado à parte (workflow_run.conclusion == 'success').
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  guard:
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rascunho/ready conforme a CI
+        env:
+          # convertPullRequestToDraft exige token de usuário; o GITHUB_TOKEN
+          # padrão não tem essa permissão. Configure o secret GUARD_PAT (PAT
+          # com escopo repo / Pull requests: RW). Sem ele, cai no GITHUB_TOKEN
+          # e o passo apenas não converte (não quebra a CI).
+          GH_TOKEN: ${{ secrets.GUARD_PAT || secrets.GITHUB_TOKEN }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          HEAD: ${{ github.event.workflow_run.head_branch }}
+          REPO: ${{ github.repository }}
+        run: |
+          PR=$(gh pr list --repo "$REPO" --head "$HEAD" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$PR" ]; then
+            echo "Nenhum PR aberto para a branch '$HEAD' — nada a fazer."
+            exit 0
+          fi
+          if [ "$CONCLUSION" = "success" ]; then
+            echo "CI verde → PR #$PR pronto para merge."
+            gh pr ready "$PR" --repo "$REPO" || true
+          else
+            echo "CI '$CONCLUSION' → PR #$PR vira rascunho (merge bloqueado)."
+            gh pr ready "$PR" --repo "$REPO" --undo || true
+          fi

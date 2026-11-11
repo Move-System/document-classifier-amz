@@ -1,0 +1,161 @@
+name: CI
+
+on:
+  pull_request:
+    # 'edited' revalida o card quando o TÍTULO do PR muda (sem novo push).
+    types: [opened, synchronize, reopened, edited]
+    branches:
+      - dev
+      - main
+  push:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write   # para o job sonar comentar o Quality Gate no PR
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── Convenção do título + card do Azure (check próprio) — só em PR ───────────
+  card:
+    name: card
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Validar título (Type(Escopo): ... AB#NNNN) e card do Azure"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+          AZURE_ORG: MoveSystem
+          # Título via env (não interpolar direto no shell — evita injeção).
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_FULL: ${{ github.repository }}
+        run: bash .github/scripts/validate-card.sh "$PR_TITLE" "$PR_NUMBER" "$REPO_FULL"
+      - name: "knowledge/ em dia com origin/main (ADR-0012)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KNOWLEDGE_PAT: ${{ secrets.KNOWLEDGE_PAT }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_FULL: ${{ github.repository }}
+        run: bash .github/scripts/verificar-knowledge.sh "$PR_NUMBER" "$REPO_FULL"
+
+  # ── Lint / formatação (check próprio) — só em PR ─────────────────────────────
+  lint:
+    name: lint
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Só arquivos alterados vs a branch base ("ratchet") — não trava o legado.
+      - name: Arquivos alterados
+        run: |
+          git fetch --no-tags origin "${{ github.event.pull_request.base.ref }}"
+          git diff --name-only --diff-filter=ACMR "origin/${{ github.event.pull_request.base.ref }}"...HEAD -- '*.js' > changed.txt
+          cat changed.txt
+
+      - name: ESLint (arquivos alterados)
+        run: |
+          if [ -s changed.txt ]; then
+            xargs yarn eslint --max-warnings 0 < changed.txt
+          else
+            echo "Nenhum arquivo alterado."
+          fi
+
+  # ── Testes + cobertura (check próprio) ───────────────────────────────────────
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Testes (com cobertura)
+        run: yarn test:cov
+
+
+      # Gate de cobertura CONFIÁVEL por PR: mede só as LINHAS DO DIFF e falha se < 80%.
+      - name: Cobertura do diff (diff-cover ≥ 80%)
+        if: github.event_name == 'pull_request'
+        run: |
+          BASE="${{ github.event.pull_request.base.ref }}"
+          git fetch --no-tags origin "$BASE":"refs/remotes/origin/$BASE" || true
+          pipx run diff-cover coverage/lcov.info \
+            --compare-branch "origin/$BASE" \
+            --fail-under 80 \
+            --html-report diff-cover.html \
+            --markdown-report diff-cover.md
+
+      - name: Upload diff-cover report
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: diff-cover
+          path: |
+            diff-cover.html
+            diff-cover.md
+          retention-days: 7
+
+  # ── SonarQube (check próprio + comentário no PR) ─────────────────────────────
+  sonar:
+    name: sonar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Sonar usa o blame do git
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Testes (com cobertura)
+        run: yarn test:cov
+
+      # sonar.qualitygate.wait=true: bloqueia o check se o gate do projeto reprovar.
+      - name: SonarQube analysis
+        uses: sonarsource/sonarqube-scan-action@v3
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.scanner.connectTimeout=60
+            -Dsonar.scanner.socketTimeout=120
+            -Dsonar.scanner.responseTimeout=120
+
+      - name: Comentar Quality Gate no PR
+        if: always() && github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: bash .github/scripts/sonar-pr-comment.sh document-classifier-amz "${{ github.event.pull_request.number }}"

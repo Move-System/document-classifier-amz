@@ -7,7 +7,9 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "test": "node --test",
-    "test:metadata": "node scripts/evaluateMetadata.js"
+    "test:metadata": "node scripts/evaluateMetadata.js",
+    "test:cov": "c8 --reporter=lcov --reporter=text-summary node --test",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.21",
@@ -17,6 +19,10 @@
     "openai": "^4.97.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9",
+    "c8": "^10",
+    "eslint": "^9",
+    "globals": "^15",
     "nodemon": "^3.1.10"
   }
 }
