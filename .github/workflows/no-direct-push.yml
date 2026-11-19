@@ -9,6 +9,8 @@ on:
 
 permissions:
   contents: read
+  # Sem esta permissão a consulta "o commit veio de PR?" volta 403, e o alerta nunca sai.
+  pull-requests: read
 
 jobs:
   detect:
@@ -25,8 +27,10 @@ jobs:
           WEBHOOK_URL: https://discord.com/api/webhooks/${{ secrets.DISCORD_WEBHOOK_ID }}/${{ secrets.DISCORD_WEBHOOK_TOKEN }}
         run: |
           [ "$PUSHER" = "github-actions[bot]" ] && exit 0
-          PR=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '.[0].number // empty' 2>/dev/null || true)
-          if [ -n "$PR" ]; then echo "commit via PR #$PR — ok"; exit 0; fi
+          # Só um número conta como PR. Se a consulta falhar, o gh imprime o JSON do erro, e
+          # antes isso passava por número de PR: o push direto saía verde e sem alerta.
+          PR=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq '.[0].number // empty' 2>/dev/null) || PR=""
+          if [[ "$PR" =~ ^[0-9]+$ ]]; then echo "commit via PR #$PR — ok"; exit 0; fi
           SUBJ=$(printf '%s' "$MSG" | head -1)
           echo "::warning title=Push direto::$PUSHER empurrou direto em $BRANCH sem PR — $SUBJ"
           BODY=$(jq -nc --arg b "$BRANCH" --arg u "$PUSHER" --arg s "${SHA:0:8}" --arg m "$SUBJ" \
